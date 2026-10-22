@@ -4,6 +4,7 @@ CHANGELOG
 8.2
 ---
 
+ * Suppress `ProgressBar` redraws when the output is not decorated or `$TERM` indicates no real terminal is attached (e.g. piped to a file or CI log), instead of printing a new line per redraw
  * Add `CompletionSuggestions::suggestPaths()`, `suggestDirectories()` and `getPathSuggestion()` to let the shell complete file system paths, as `InputFile` arguments and options now do
  * Pass the `CompletionSuggestions` to the `suggestedValues` closures of arguments and options
  * List the accepted values of `#[Argument]` and `#[Option]` inputs mapped to backed enums in their description, e.g. `[possible values: pending, paid]`
