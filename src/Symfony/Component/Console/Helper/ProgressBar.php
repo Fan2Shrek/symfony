@@ -467,12 +467,28 @@ final class ProgressBar
             return;
         }
 
+        if (!$this->hasInteractiveTerminal()) {
+            return;
+        }
+
         if (null === $this->format) {
             $this->setRealFormat($this->internalFormat ?: $this->determineBestFormat());
         }
 
         $this->overwrite($this->buildLine());
         $this->writeOscProgress();
+    }
+
+    /**
+     * Whether a real, interactive terminal is attached.
+     *
+     * Decoration can be forced (e.g. by FORCE_COLOR) without a controlling terminal, which
+     * would otherwise flood non-interactive output (piped to a file, CI logs, cron jobs) with
+     * redraws; $TERM is unset in that case on every platform except Windows.
+     */
+    private function hasInteractiveTerminal(): bool
+    {
+        return $this->output->isDecorated() && ('\\' === \DIRECTORY_SEPARATOR || false !== getenv('TERM'));
     }
 
     /**
